@@ -1,0 +1,7 @@
+Gemfile.lock
+
+.terraform
+terraform.tfstate.d
+*.pem
+
+secrets.env
