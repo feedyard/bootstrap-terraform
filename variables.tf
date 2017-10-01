@@ -8,3 +8,10 @@ terraform {
     key    = "bootstrap/bootstrap.tfstate"
   }
 }
+
+variable "bootstrap-aws-default-region" {}
+
+variable "bootstrap-vpc-name" {}
+variable "bootstrap-cidr" {}
+variable "bootstrap-subnets" { type = "list" }
+variable "bootstrap-azs" { type = "list" }
