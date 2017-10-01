@@ -2,7 +2,7 @@
 # all resources managed by terraform are tagged as such to assit in diagnosing errors
 
 module "vpc-bootstrap" {
-  source = "terraform-aws-modules/vpc/aws"
+  source = "github.com/feedyard/terraform_aws_vpc"
 
   name = "${var.bootstrap-vpc-name}"
   cidr = "${var.bootstrap-cidr}"

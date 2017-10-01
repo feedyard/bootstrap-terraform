@@ -1,7 +1,5 @@
 # bootstrap-terraform
 
-# bootstrap_tf
-
 (Note: See notes in feedyard/documentation regarding similar project published by the ThoughtWorks Digital Platform Strategy product team.)
 
 As part of a greenfield build of an example platform-as-a-service style product based on Kubernetes, bootstrap-terraform creates the initial aws infrastructure to support the automated orchestration of the complete platform.  
@@ -9,35 +7,23 @@ It is recommended that the bootstrap environment be implemented in the AWS accou
 
 There are several dependencies or requirements necessary to use this configuration. See the section below prior to implementing.
 
+## creating the bootstrap workspace example
 
-
-
-
-
-
-
-
-### Implementation
-
-Create a new bootstrap repo with a complete copy of bootstrap_tf.
+Create a local copy of the bootstrap-terraform repo.  
 
 Review `bootstrap.tfvars` to confirm the following:
-* correct bucket and folder names for the tfstate files in s3 (it is recommend to maintain separate state files for the bootstrap env as it is part of DR)
+* correct bucket and folder names for the tfstate files in s3
 * the custom names selected for the specific resources
-* the appropriate cidr for use in your org architecture design
+* the appropriate cidr and subnets for use in your org architecture design
 
-Review `main.tf` to confirm the following:
-* correct repo names for the org clones of the community-terraform-modules
+This example uses the aws-vpc module from the terraform public registry.
 
-This example places all terraform Name parameters into a tfvar folder rather than inline in main.tf
-This enables a simple json readable desired state configuration that is used when provisioning the bootstrap host and other monitoring or testing.
+*Security Note*: this reference assumes that public ingress is permitted via https for access to the orchestration tooling that will be deployed as part of the bootstrap process. You may wish to adopt a different security approach such as access only via a bastion host or other similarly more restrictive strategy.  
 
-*Security Note*: this reference assumes that public ingress is permitted via https for access to the orchestration tooling that will be deployed as part of the bootstrap process. You may wish to adopt a different security approach such as access only via a bastion host or other similarly more restrictive strategy.<br />
-
-Initialize terraform to confirm remote state location and create the bootstrap env definition. Assumes AWS Environment credentials.
+Initialize terraform to confirm remote state location and create the bootstrap workspace tfstate files. Assumes AWS Environment credentials are available.
 ```bash
 $ terraform init -var-file=./bootstrap.tfvars
-$ terraform env new bootstrap
+$ terraform workspace new bootstrap
 ```
 
 Perform the spec tests to confirm testability. At this stage naturally the tests will all fail.
@@ -56,6 +42,9 @@ $ terraform apply -var-file=./bootstrap.tfvars
 ```
 
 Run the spec test again to confirm the changes were successful.
+
+
+
 
 There are Invoke commands available to assist in the above steps. See tasks.py for further information. Invoke tasks will be used to complete this bootstrap process.
 
