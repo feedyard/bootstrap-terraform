@@ -43,17 +43,10 @@ $ terraform apply -var-file=./bootstrap.tfvars
 
 Run the spec test again to confirm the changes were successful.
 
+There are Invoke commands available to assist in the above steps. See tasks.py for further information. Invoke tasks will be used to complete this bootstrap process.  
+At this point the bootstrap network location, efs mount point, and bootstrap host node are created and available.  
 
-
-
-There are Invoke commands available to assist in the above steps. See tasks.py for further information. Invoke tasks will be used to complete this bootstrap process.
-
-At this point the bootstrap network location, efs mount point, and bootstrap host node are created and available.
-
-Note* unresolved bug: during the provision of this node, the mount command to add the efs mount fails, however the efs volume is available upon reboot. This happens whether the efs mount was previous available or during single run to create everything. 
-
-The next step is the secure the docker daemon, initialize the host as a docker swarm, and store the access keys as secrets in the swarm to support the baseline orchestration step.
-
+The next step is to secure the docker daemon, initialize the host as a docker swarm, and optionally store the access keys as secrets in the swarm to support the baseline orchestration step.  
 
 the Invoke Prep task uses docker-machine to install docker and to secure the daemon with self-signed keys.
 ```bash
@@ -65,7 +58,7 @@ Initialize the secured host as a swarm.
 $ invoke swarm
 ```
 
-Store the new secure keys as secrets on the swarm so that upcoming deployment pipeline tasks can use them.
+_optional_: Store the new secure keys as secrets on the swarm so that upcoming deployment pipeline tasks can use them.
 ```bash
 $ invoke secrets
 ```
@@ -111,15 +104,5 @@ $ pip install invoke, boto3
 $ bundle install
 ```
 [Terraform](https://www.terraform.io)  
-
-
-##### note on keys
-
-There are a a few keys that are assumed to be available or created by this process. You will need a secure method of storing and distributing these keys.
-1password for teams is an example of a simple method.
-
-##### GitHub repositories
-
-Reference Implementation terraform automation often makes use of terrafrom modules via github/org/<repositories>.<br />
-
-While many helpful community modules are available, the best practice is to create copies of these modules in an org-specific repo and pull/test changes from the public source rather than deploying directly. The feedyard convention is to include community-terraform-modules using the prefix "tfcm-"
+[docker](https://www.docker.com/community-edition#/download)
+[docker-machine](https://docs.docker.com/machine/install-machine/)
